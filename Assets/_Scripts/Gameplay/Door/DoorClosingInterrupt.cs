@@ -11,6 +11,9 @@
         #region Public Methods
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
+            /* exit this state immediately if the door is blocked by player */
+            if (_DoorBlocked) { animator.Play(_DoorOpenedStateName); return; }
+
             _CurrentAnimator = animator;
             _StateActive = true;
         }
@@ -30,11 +33,13 @@
         private void OnEnable()
         {
             _DoorCollider.OnPlayerEnter += OnPlayerEnterCollider;
+            _DoorCollider.OnPlayerExit += OnPlayerExitCollider;
         }
 
         private void OnDisable()
         {
             _DoorCollider.OnPlayerEnter -= OnPlayerEnterCollider;
+            _DoorCollider.OnPlayerExit -= OnPlayerExitCollider;
         }
         #endregion Unity Methods
 
@@ -47,15 +52,23 @@
         private Animator _CurrentAnimator;
         private AnimatorStateInfo _CurrentStateInfo;
         private bool _StateActive;
+        private bool _DoorBlocked;
 
         private const string _DoorOpeningStateName = "DoorOpening";
+        private const string _DoorOpenedStateName = "DoorOpened";
         #endregion Private Variables
 
         #region Private Methods
         private void OnPlayerEnterCollider(object sender, DoorColliderController.OnPlayerEnterArgs args)
         {
-            if (!_StateActive) { return; }
+            if (!_StateActive) { _DoorBlocked = true;  return; }
+
             _CurrentAnimator.Play(_DoorOpeningStateName, 0, 1f - _CurrentStateInfo.normalizedTime);
+        }
+
+        private void OnPlayerExitCollider(object sender, DoorColliderController.OnPlayerExitArgs args)
+        {
+            _DoorBlocked = false;
         }
         #endregion Private Methods
     }

@@ -13,10 +13,15 @@
         public sealed class OnPlayerEnterArgs : EventArgs
         {
         }
+
+        public sealed class OnPlayerExitArgs : EventArgs
+        {
+        }
         #endregion Public Types
 
         #region Public Variables
-        public event EventHandler<OnPlayerEnterArgs> OnPlayerEnter;
+        public event EventHandler<OnPlayerEnterArgs> OnPlayerEnter; 
+        public event EventHandler<OnPlayerExitArgs> OnPlayerExit;
         #endregion Public Variables
 
         #region Unity Methods
@@ -25,6 +30,14 @@
             if(other.CompareTag(_PlayerTag))
             {
                 OnPlayerEnter?.Invoke(this, new OnPlayerEnterArgs());
+            }
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.CompareTag(_PlayerTag))
+            {
+                OnPlayerExit?.Invoke(this, new OnPlayerExitArgs());
             }
         }
         #endregion Unity Methods
