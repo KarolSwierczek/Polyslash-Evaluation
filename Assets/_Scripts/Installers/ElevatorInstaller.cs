@@ -9,13 +9,13 @@
         #region Public Methods
         public override void InstallBindings()
         {
-            Container.BindInstance(_Settings).AsSingle().NonLazy();
-            Container.BindInterfacesAndSelfTo<ElevatorController>().AsSingle().NonLazy();
+            Container.BindInterfacesAndSelfTo<ElevatorController>().AsSingle().WithArguments(_Settings, _FloorContainer).NonLazy();
         }
         #endregion Public Methods
 
         #region Inspector Variables
         [SerializeField] private ElevatorData _Settings;
+        [SerializeField] private FloorContainter _FloorContainer;
         #endregion Inspector Variables
 
     }

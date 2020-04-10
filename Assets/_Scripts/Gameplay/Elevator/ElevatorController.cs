@@ -46,9 +46,10 @@
         #region Public Methods
         //note: I'm using a Zenject constructor in pure C# classes and field attributes in MonoBehaviours
         [Inject]
-        public ElevatorController(ElevatorData data)
+        public ElevatorController(ElevatorData data, FloorContainter floorContainer)
         {
             _Data = data;
+            _FloorContainer = floorContainer;
         }
 
         public bool TryRequestFloor(int floor)
@@ -74,6 +75,7 @@
 
         #region Private Variables
         private readonly ElevatorData _Data;
+        private readonly FloorContainter _FloorContainer;
 
         private int _CurrentFloor = 0;
         #endregion Private Variables
@@ -99,7 +101,7 @@
             {
                 State = ElevatorState.Moving;
 
-                var targetHeight = _Data.GetFloorHeight(floor);
+                var targetHeight = _FloorContainer.GetFloorHeight(floor);
                 OnStartMoving?.Invoke(this, new OnStartMovingArgs(targetHeight, speed));
 
                 yield return Timing.WaitUntilDone(MoveCoroutine());              

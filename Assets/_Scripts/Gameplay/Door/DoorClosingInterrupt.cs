@@ -12,7 +12,7 @@
         override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
         {
             /* exit this state immediately if the door is blocked by player */
-            if (_DoorBlocked) { animator.Play(_DoorOpenedStateName); return; }
+            if (_DoorBlocked) { animator.Play(_DoorOpenedState); return; }
 
             _CurrentAnimator = animator;
             _StateActive = true;
@@ -54,8 +54,8 @@
         private bool _StateActive;
         private bool _DoorBlocked;
 
-        private const string _DoorOpeningStateName = "DoorOpening";
-        private const string _DoorOpenedStateName = "DoorOpened";
+        private readonly int _DoorOpeningState = Animator.StringToHash("DoorOpening");
+        private readonly int _DoorOpenedState = Animator.StringToHash("DoorOpened");
         #endregion Private Variables
 
         #region Private Methods
@@ -63,7 +63,7 @@
         {
             if (!_StateActive) { _DoorBlocked = true;  return; }
 
-            _CurrentAnimator.Play(_DoorOpeningStateName, 0, 1f - _CurrentStateInfo.normalizedTime);
+            _CurrentAnimator.Play(_DoorOpeningState, 0, 1f - _CurrentStateInfo.normalizedTime);
         }
 
         private void OnPlayerExitCollider(object sender, DoorColliderController.OnPlayerExitArgs args)

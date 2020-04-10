@@ -14,7 +14,6 @@
         #region Public Methods
         public void Interact() 
         {
-            if(_CurrentVisibleItems.Count == 0) { return; }
             _CurrentVisibleItems.ForEach(x => x.OnUse());
         }
         #endregion Public Methods
@@ -33,25 +32,23 @@
         private void Update()
         {
             /*if there's anything in player interaction range */
-            if (Physics.Raycast(_Camera.position, _Camera.forward, out _Hit, _Data.Range))
+            if (Physics.Raycast(_Camera.position, _Camera.forward, out RaycastHit hit, _Data.Range, _Data.InteractionMask))
             {
                 /* ...and it's an interactable object */
-                var interactables = _Hit.transform.GetComponents<IInteractable>();
-                if(interactables.Length > 0)
-                {
-                    foreach(var interactable in interactables)
-                    {
-                        if (!_CurrentVisibleItems.Contains(interactable))
-                        {
-                            _CurrentVisibleItems.Add(interactable);
-                            interactable.OnVisible();
-                        }
-                    }
+                var interactables = hit.transform.GetComponents<IInteractable>();
 
-                    return;
+                foreach(var interactable in interactables)
+                {
+                    if (!_CurrentVisibleItems.Contains(interactable))
+                    {
+                        _CurrentVisibleItems.Add(interactable);
+                        interactable.OnVisible();
+                    }
                 }
+                
+                if(interactables.Length > 0) { return; }
             }
-            /* if there are no interactable object in shight */
+            /* if there are no interactable object in sight */
             if(_CurrentVisibleItems.Count > 0)
             {
                 _CurrentVisibleItems.ForEach(x => x.OnInvisible());
@@ -69,8 +66,7 @@
         [Inject] private PlayerInteractionData _Data;
         [Inject] private InputHandler _InputHandler;
 
-        private RaycastHit _Hit = new RaycastHit();
-        private List<IInteractable> _CurrentVisibleItems = new List<IInteractable>();
+        private readonly List<IInteractable> _CurrentVisibleItems = new List<IInteractable>();
         #endregion Private Variables
 
         #region Private Methods

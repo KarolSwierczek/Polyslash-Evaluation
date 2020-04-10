@@ -13,3 +13,6 @@ MonoBehaviour:
   m_Name: PlayerInteractionData
   m_EditorClassIdentifier: 
   _Range: 5
+  _InteractionMask:
+    serializedVersion: 2
+    m_Bits: 768

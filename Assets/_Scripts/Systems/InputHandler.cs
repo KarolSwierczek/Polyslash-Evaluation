@@ -7,6 +7,9 @@
     /// <summary>
     /// this class handles the player input and invokes appropriate events
     /// </summary>
+    /// <remarks>
+    /// using this instead of the new input system for simplicity
+    /// </remarks>
     public sealed class InputHandler : ITickable
     {
         #region Public Types

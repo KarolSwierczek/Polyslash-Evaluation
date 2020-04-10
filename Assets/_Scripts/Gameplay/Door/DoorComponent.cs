@@ -22,12 +22,12 @@
         #endregion Unity Methods
 
         #region Inspector Variables
-        [FoldoutGroup("Refereces")]
+        [FoldoutGroup("References")]
         [SerializeField] private Animator _Animator;
         #endregion Inspector Variables
 
         #region Private Variables
-        private const string _DoorOpenTrigger = "Open";
+        private readonly int _DoorOpenTrigger = Animator.StringToHash("Open");
 
         [Inject] private readonly ElevatorController _Controller;
         #endregion Private Variables
@@ -38,6 +38,7 @@
             _Animator.SetTrigger(_DoorOpenTrigger);
         }
 
+        //note: used in AnimationEvent
         private void OnDoorAnimationComplete()
         {
             _Controller.OnDoorClosed();

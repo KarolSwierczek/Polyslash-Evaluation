@@ -17,7 +17,7 @@
         [FoldoutGroup("Settings"), BoxGroup("Settings/General"), Tooltip("UI message that appears when player looks at this button ")]
         [SerializeField] private string _Message;
 
-        [FoldoutGroup("Settings"), BoxGroup("Settings/Audio"), Tooltip("Clip that plays on succesful button press ")]
+        [FoldoutGroup("Settings"), BoxGroup("Settings/Audio"), Tooltip("Clip that plays on successful button press ")]
         [SerializeField] private AudioClip _PressSuccess;
 
         [FoldoutGroup("Settings"), BoxGroup("Settings/Audio"), Tooltip("Clip that plays on rejected button press ")]
@@ -37,7 +37,6 @@
         private void OnButtonPressed(int floor)
         {
             var success = _Controller.TryRequestFloor(floor);
-
             _AudioSource.clip = success ? _PressSuccess : _PressFail;
             _AudioSource.Play();
         }
