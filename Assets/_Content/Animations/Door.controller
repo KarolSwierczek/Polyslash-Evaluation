@@ -56,7 +56,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fcd39be5cef0fd542936494c32305012, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _DoorCollider: {fileID: 0}
 --- !u!1102 &-5248578299401373895
 AnimatorState:
   serializedVersion: 5
